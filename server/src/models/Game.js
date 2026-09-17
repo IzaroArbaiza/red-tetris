@@ -1,0 +1,41 @@
+import { Piece } from './Piece.js'
+import { Player } from './Player.js'
+
+export class Game {
+	constructor(name) {
+		this.name = name
+		this.players = new Map()	//For shocketId -> Player
+		this.piece = []				//Piece sequence (could change)
+		this.status = 'waiting'		//waiting || playing for players (multiplayer)
+	}
+
+	addPlayer(socketId, name) {
+		const isHost = this.players.size === 0	//If room has only player, it's the host
+		const newPlayer = new Player(socketId, name, isHost)
+		this.players.set(socketId, newPlayer)
+		return newPlayer
+	}
+
+	removePlayer(socketId) {
+		const playerToRemove = this.players.get(socketId)
+		this.players.delete(socketId)
+
+		//If host leaves and are still players, next one gots host of room
+		if(playerToRemove && playerToRemove.isHost && this.players.size > 0) {
+			const nextPlayer = this.players.values().next().value
+			nextPlayer.isHost  = true
+		}
+	}
+	
+	addMorePieces(count = 10) {
+		for(let i = 0; i < count; i++) {
+			this.piece.push(Piece.getRandomPiece())
+		}
+	}
+
+	start() {
+		this.status = 'playing'
+		this.pieces = []
+		this.addMorePieces(20)		//Starting 20 pieces
+	}
+}

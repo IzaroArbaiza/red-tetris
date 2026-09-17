@@ -3,11 +3,12 @@
     "version": "1.0.0",
     "private": true,
     "type": "module",
-    "scripts":{
+    "scripts": {
         "dev": "node --watch src/index.js",
         "start": "node src/index.js"
     },
-    "dependencies":{
-        "express": "^5.1.0"
+    "dependencies": {
+        "express": "^5.1.0",
+        "socket.io": "^4.8.3"
     }
 }
