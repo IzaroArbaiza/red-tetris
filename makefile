@@ -58,8 +58,6 @@ clean:
 	@rm -rf "$(CLIENT)/dist"
 
 fclean: clean
-	@rm -rf "$(CLIENT)/node_modules"
-	@rm -rf "$(SERVER)/node_modules"
-	@rm -rf "$(NODE_DIR)"
+	@git clean -fdX
 
 re: fclean build
