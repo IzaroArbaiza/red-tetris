@@ -11,7 +11,6 @@ export function setupSocketEvents(io) {
 				socket.emit('error', {message: 'Player or room name missing'})
 				return
 			}
-
 			if(!games.has(room)) {
 				games.set(room, new Game(room))
 				console.log(`[Game] Room created: ${room}`)
@@ -19,6 +18,10 @@ export function setupSocketEvents(io) {
 			const game = games.get(room)
 			if(game.status === 'playing') {
 				socket.emit('error', {message: `Game already started`})
+				return
+			}
+			if(game.isNameTaken(playerName)) {
+				socket.emit('error', {message: `Name "${playerName}" is already taken`})
 				return
 			}
 
@@ -60,11 +63,12 @@ export function setupSocketEvents(io) {
 			console.log(`[Socket] User disconnected, ID: ${socket.id}`)
 			games.forEach((game, roomName) => {
 				if(game.players.has(socket.id)){
-					game.removePlayer(socket.id)
+					const removedPlayer = game.removePlayer(socket.id)
 					if(game.players.size === 0) {
 						games.delete(roomName)
 						console.log(`[Game] Room ${roomName} removed`)
 					} else {
+						console.log(`[Game] ${removedPlayer} left room "${roomName}"`)
 						io.to(roomName).emit('gameUpdated', {
 							room: game.name,
 							status: game.status,

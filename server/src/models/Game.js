@@ -9,6 +9,17 @@ export class Game {
 		this.status = 'waiting'		//waiting || playing for players (multiplayer)
 	}
 
+	isNameTaken(playerName) {
+		const players = Array.from(this.players.values())
+		for(let i = 0; i < players.length; i++) {
+			const actualPlayer = players[i];
+			if(actualPlayer.name.toLowerCase() === playerName.toLowerCase()) {
+				return true
+			}
+		}
+		return false
+	}
+
 	addPlayer(socketId, name) {
 		const isHost = this.players.size === 0	//If room has only player, it's the host
 		const newPlayer = new Player(socketId, name, isHost)
