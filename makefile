@@ -48,8 +48,6 @@ build:
 		echo "Installing server dependencies..."; \
 		PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" install --prefix "$(SERVER)"; \
 	fi
-	@echo "Building client..."
-	@PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run build --prefix "$(CLIENT)"
 	@echo "Starting project..."
 	@PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run dev --prefix "$(SERVER)" & \
 	PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run dev --prefix "$(CLIENT)" -- --host 0.0.0.0
