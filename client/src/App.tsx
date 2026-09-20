@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { PrimeReactProvider } from 'primereact/api'
-import Home from './Home'
-import Lobby from './Lobby'
+import Home from './pages/Home/Home'
+import Lobby from './pages/Lobby/Lobby'
 import './App.css'
 
 function App() {
