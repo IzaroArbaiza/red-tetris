@@ -29,6 +29,8 @@ export class Game {
 
 	removePlayer(socketId) {
 		const playerToRemove = this.players.get(socketId)
+		if(!playerToRemove)
+			return null
 		this.players.delete(socketId)
 
 		//If host leaves and are still players, next one gots host of room
@@ -36,12 +38,20 @@ export class Game {
 			const nextPlayer = this.players.values().next().value
 			nextPlayer.isHost  = true
 		}
+		return playerToRemove
 	}
 	
 	addMorePieces(count = 10) {
 		for(let i = 0; i < count; i++) {
-			this.piece.push(Piece.getRandomPiece())
+			this.pieces.push(Piece.getRandomPiece())
 		}
+	}
+
+	getPieces(startIndex, count = 5) {
+		while(this.pieces.length < startIndex + count) {
+			this.addMorePieces(10)
+		}
+		return this.pieces.slice(startIndex, startIndex + count)
 	}
 
 	start() {

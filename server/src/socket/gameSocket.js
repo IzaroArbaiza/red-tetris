@@ -59,6 +59,17 @@ export function setupSocketEvents(io) {
 			})
 		})
 
+		socket.on('requestPieces', ({room, startIndex}) => {
+			const game = games.get(room)
+			if(!game || game.status !== 'playing')
+				return
+			const newPieces = game.getPieces(startIndex, 5)
+			socket.emit('morePieces', {
+				startIndex,
+				pieces: newPieces
+			})
+		})
+
 		socket.on('disconnect', () => {
 			console.log(`[Socket] User disconnected, ID: ${socket.id}`)
 			games.forEach((game, roomName) => {
