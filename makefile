@@ -48,8 +48,6 @@ build:
 		echo "Installing server dependencies..."; \
 		PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" install --prefix "$(SERVER)"; \
 	fi
-	@echo "Building client..."
-	@PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run build --prefix "$(CLIENT)"
 	@echo "Starting project..."
 	@PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run dev --prefix "$(SERVER)" & \
 	PATH="$(NODE_DIR)/bin:$$PATH" "$(NODE)" "$(NPM)" run dev --prefix "$(CLIENT)" -- --host 0.0.0.0
@@ -58,8 +56,6 @@ clean:
 	@rm -rf "$(CLIENT)/dist"
 
 fclean: clean
-	@rm -rf "$(CLIENT)/node_modules"
-	@rm -rf "$(SERVER)/node_modules"
-	@rm -rf "$(NODE_DIR)"
+	@git clean -fdX
 
 re: fclean build
