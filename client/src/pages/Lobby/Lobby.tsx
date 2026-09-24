@@ -5,7 +5,11 @@ import { Button } from 'primereact/button'
 
 const initialPlayers = ['Player1', 'Player2', 'Player3']
 
-function Lobby() {
+interface LobbyProps {
+  onPlay: () => void
+}
+
+function Lobby({ onPlay }: LobbyProps) {
   const { playerName } = useParams()
   const navigate = useNavigate()
   const [players, setPlayers] = useState(initialPlayers)
@@ -34,6 +38,7 @@ function Lobby() {
         </Card>
       ))}
 
+      <Button label="Jugar" onClick={onPlay} />
       <Button label="Salir de la sala" onClick={handleLeave} />
     </section>
   )

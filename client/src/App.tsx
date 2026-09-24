@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { PrimeReactProvider } from 'primereact/api'
 import Home from './pages/Home/Home'
-import Lobby from './pages/Lobby/Lobby'
+import Room from './pages/Room/Room'
 import './App.css'
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <PrimeReactProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/:roomName/:playerName" element={<Lobby />} />
+        <Route path="/:roomName/:playerName" element={<Room />} />
       </Routes>
     </PrimeReactProvider>
   )

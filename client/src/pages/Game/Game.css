@@ -1,0 +1,61 @@
+#game {
+  padding: 16px;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #eee;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.game-layout {
+  display: flex;
+  gap: 56px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.game-main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.game-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.game-player-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.game-opponents {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 70vh;
+  width: 480px;
+}
+
+.game-opponents h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.game-opponents-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+}
