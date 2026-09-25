@@ -1,5 +1,5 @@
 import type { Cell } from '../../types/tetris'
-import './NextPiece.css'
+import '../../styles/next-piece.scss'
 
 interface NextPieceProps {
   grid: Cell[][]

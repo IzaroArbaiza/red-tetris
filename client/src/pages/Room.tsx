@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Lobby from '../Lobby/Lobby'
-import Game from '../Game/Game'
+import Lobby from './Lobby'
+import Game from './Game'
 
 type RoomPhase = 'waiting' | 'playing'
 

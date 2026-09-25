@@ -1,5 +1,5 @@
 import { BOARD_COLS, BOARD_ROWS, type BoardGrid } from '../../types/tetris'
-import './Board.css'
+import '../../styles/board.scss'
 
 interface BoardProps {
   grid: BoardGrid

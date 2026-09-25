@@ -1,5 +1,5 @@
 import { BOARD_COLS, BOARD_ROWS, type OpponentSpectrum } from '../../types/tetris'
-import './Spectrum.css'
+import '../../styles/spectrum.scss'
 
 interface SpectrumProps {
   opponent: OpponentSpectrum

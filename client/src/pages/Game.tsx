@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom'
 import { Button } from 'primereact/button'
-import Board from '../../components/Board/Board'
-import NextPiece from '../../components/NextPiece/NextPiece'
-import Spectrum from '../../components/Spectrum/Spectrum'
-import { BOARD_COLS, BOARD_ROWS, type BoardGrid, type Cell, type OpponentSpectrum } from '../../types/tetris'
-import './Game.css'
+import Board from '../components/Board/Board'
+import NextPiece from '../components/NextPiece/NextPiece'
+import Spectrum from '../components/Spectrum/Spectrum'
+import { BOARD_COLS, BOARD_ROWS, type BoardGrid, type Cell, type OpponentSpectrum } from '../types/tetris'
+import '../styles/game.scss'
 
 const MAX_OPPONENTS = 4
 
