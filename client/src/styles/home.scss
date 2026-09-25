@@ -1,0 +1,50 @@
+@use './variables' as *;
+
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background-color: $color-bg;
+  color: $color-text;
+}
+
+.home-title {
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+
+  span {
+    color: $color-cyan;
+  }
+}
+
+.home-panel {
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  width: min(320px, 100%);
+}
+
+.home-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 0.85rem;
+    color: $color-text-muted;
+  }
+}
+
+.home-submit {
+  width: 100%;
+  margin-top: $spacing-sm;
+}

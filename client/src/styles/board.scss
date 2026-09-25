@@ -1,0 +1,43 @@
+@use './variables' as *;
+
+.board {
+  display: grid;
+  gap: 1px;
+  background-color: $color-grid-bg;
+  border: 2px solid $color-border;
+  aspect-ratio: 10 / 20;
+  height: 70vh;
+  max-width: 100%;
+}
+
+.board-cell {
+  background-color: $color-surface-alt;
+
+  &.cell-cyan {
+    background-color: $color-cyan;
+  }
+
+  &.cell-blue {
+    background-color: $color-blue;
+  }
+
+  &.cell-orange {
+    background-color: $color-orange;
+  }
+
+  &.cell-yellow {
+    background-color: $color-yellow;
+  }
+
+  &.cell-green {
+    background-color: $color-green;
+  }
+
+  &.cell-purple {
+    background-color: $color-purple;
+  }
+
+  &.cell-red {
+    background-color: $color-red;
+  }
+}

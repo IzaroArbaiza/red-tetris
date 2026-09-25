@@ -1,0 +1,74 @@
+@use './variables' as *;
+
+.lobby {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background-color: $color-bg;
+  color: $color-text;
+  width: min(480px, 100%);
+  margin: 0 auto;
+}
+
+.lobby-title {
+  font-size: 1.5rem;
+}
+
+.lobby-players {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  width: 100%;
+}
+
+.lobby-player {
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: $color-cyan;
+  }
+}
+
+.lobby-player-name {
+  flex: 1;
+  font-weight: bold;
+}
+
+.lobby-player-host {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: $radius-md;
+  background-color: $color-purple;
+  color: $color-text;
+}
+
+.lobby-player-ready {
+  font-size: 1.1rem;
+  color: $color-red;
+
+  &.is-ready {
+    color: $color-green;
+  }
+}
+
+.lobby-actions {
+  display: flex;
+  gap: $spacing-sm;
+  width: 100%;
+
+  > * {
+    flex: 1;
+  }
+}

@@ -1,15 +1,17 @@
+@use './variables' as *;
+
 #game {
-  padding: 16px;
+  padding: $spacing-md;
   min-height: 100vh;
-  background-color: #0a0a0a;
-  color: #eee;
+  background-color: $color-bg;
+  color: $color-text;
 }
 
 .game-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: $spacing-md;
 }
 
 .game-layout {
@@ -21,7 +23,7 @@
 
 .game-main {
   display: flex;
-  gap: 16px;
+  gap: $spacing-md;
   align-items: flex-start;
 }
 
@@ -48,7 +50,7 @@
 .game-opponents h2 {
   margin: 0;
   font-size: 1rem;
-  color: #ccc;
+  color: $color-text-muted;
 }
 
 .game-opponents-grid {
@@ -57,5 +59,5 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 16px;
+  gap: $spacing-md;
 }

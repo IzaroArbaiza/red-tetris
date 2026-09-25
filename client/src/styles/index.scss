@@ -1,0 +1,24 @@
+@use './variables' as *;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  background-color: $color-bg;
+  color: $color-text;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
