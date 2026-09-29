@@ -4,6 +4,7 @@ import Board from '../components/Board/Board'
 import NextPiece from '../components/NextPiece/NextPiece'
 import Spectrum from '../components/Spectrum/Spectrum'
 import { BOARD_COLS, BOARD_ROWS, type BoardGrid, type Cell, type OpponentSpectrum } from '../types/tetris'
+import type { PlayerData } from './Room'
 import '../styles/game.scss'
 
 const MAX_OPPONENTS = 4
@@ -43,12 +44,13 @@ function buildMockOpponents(): OpponentSpectrum[] {
 }
 
 interface GameProps {
+  roomName: string
+  playerName: string
+  players: PlayerData[]
   onLeaveGame: () => void
 }
 
-function Game({ onLeaveGame }: GameProps) {
-  const { roomName, playerName } = useParams()
-
+function Game({ roomName, playerName, players, onLeaveGame }: GameProps) {
   const board = buildMockBoard()
   const nextPiece = buildMockNextPiece()
   const opponents = buildMockOpponents()

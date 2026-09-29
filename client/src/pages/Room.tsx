@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Toast } from 'primereact/toast'
 import { socket } from '../services/socket'
 import Lobby from './Lobby'
 import Game from './Game'
@@ -15,10 +16,10 @@ type RoomPhase = 'waiting' | 'playing'
 function Room() {
   const { roomName, playerName } = useParams<{ roomName: string; playerName: string }>()
   const navigate = useNavigate()
+  const toastRef = useRef<Toast>(null)
 
   const [phase, setPhase] = useState<RoomPhase>('waiting')
   const [players, setPlayers] = useState<PlayerData[]>([])
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (!roomName || !playerName) return
@@ -27,7 +28,6 @@ function Room() {
       socket.emit('joinGame', { room: roomName, playerName })
     }
     socket.on('gameUpdated', (data: { players: PlayerData[]; status: RoomPhase }) => {
-      setErrorMessage(null)
       setPlayers(data.players)
       setPhase(data.status)
     })
@@ -35,7 +35,13 @@ function Room() {
       setPhase('playing')
     })
     socket.on('error', (err: { message: string }) => {
-      setErrorMessage(err.message)
+      toastRef.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: err.message,
+        life: 3000,
+      })
+      setTimeout(() => {}, 5000)
     })
 
     if (socket.connected) {
@@ -52,28 +58,37 @@ function Room() {
       socket.off('error')
       socket.disconnect()
     }
-  }, [roomName, playerName])
+  }, [roomName, playerName, navigate])
 
-  if (errorMessage) {
-    return (
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <h2>Error: {errorMessage}</h2>
-        <button onClick={() => navigate('/')}>Volver al inicio</button>
-      </div>
-    )
+  const handleLeaveRoom  = () => {
+    socket.disconnect()
+    navigate('/')
   }
 
   if (phase === 'playing') {
-    return <Game onLeaveGame={() => setPhase('waiting')} />
+    return (
+      <>
+        <Toast ref={toastRef} position="top-right"/>
+        <Game
+          roomName={roomName ?? ''}
+          playerName={playerName ?? ''}
+          players={players}
+          onLeaveGame={handleLeaveRoom}
+        />
+      </>
+    )
   }
 
   return (
-    <Lobby
-      players={players}
-      currentSocketId={socket.id}
-      onStartGame={() => socket.emit('startGame', { room: roomName })}
-      onLeave={() => navigate('/')}
-    />
+    <>
+      <Toast ref={toastRef} position="top-right"/>
+      <Lobby
+        players={players}
+        currentSocketId={socket.id}
+        onStartGame={() => socket.emit('startGame', { room: roomName })}
+        onLeave={handleLeaveRoom}
+      />
+    </>
   )
 }
 
