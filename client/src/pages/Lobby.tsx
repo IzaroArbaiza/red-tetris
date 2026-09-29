@@ -1,30 +1,16 @@
-import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from 'primereact/button'
+import type { PlayerData } from './Room'
 import '../styles/lobby.scss'
 
-const initialPlayers = ['Player1', 'Player2', 'Player3']
-
 interface LobbyProps {
-  onPlay: () => void
+  players: PlayerData[]
+  currentSocketId?: string
+  onStartGame: () => void
+  onLeave: () => void
 }
 
-function Lobby({ onPlay }: LobbyProps) {
-  const { playerName } = useParams()
-  const navigate = useNavigate()
-  const [players, setPlayers] = useState(initialPlayers)
-  const [readyMap, setReadyMap] = useState<Record<string, boolean>>({})
-
-  const host = players[0]
-
-  const toggleReady = (player: string) => {
-    setReadyMap((prev) => ({ ...prev, [player]: !prev[player] }))
-  }
-
-  const handleLeave = () => {
-    setPlayers((prev) => prev.filter((player) => player !== playerName))
-    navigate('/')
-  }
+function Lobby({ players, currentSocketId, onStartGame, onLeave }: LobbyProps) {
+  const isHost = players.find((p) => p.id === currentSocketId)?.isHost ?? false
 
   return (
     <section className="lobby">
@@ -32,19 +18,21 @@ function Lobby({ onPlay }: LobbyProps) {
 
       <div className="lobby-players">
         {players.map((player) => (
-          <div key={player} className="lobby-player" onClick={() => toggleReady(player)}>
-            <span className="lobby-player-name">{player}</span>
-            {player === host && <span className="lobby-player-host">Host</span>}
-            <span className={`lobby-player-ready${readyMap[player] ? ' is-ready' : ''}`}>
-              {readyMap[player] ? '✔' : '✘'}
-            </span>
+          <div key={player.id} className="lobby-player">
+            <span className="lobby-player-name">{player.name}</span>
+            {player.isHost && <span className="lobby-player-host">Host</span>}
           </div>
         ))}
       </div>
 
       <div className="lobby-actions">
-        <Button label="Jugar" onClick={onPlay} />
-        <Button label="Salir de la sala" severity="secondary" onClick={handleLeave} />
+        {/* Only Host can push the button */}
+        {isHost ? (
+          <Button label="Iniciar Juego" onClick={onStartGame} />
+        ) : (
+          <p>Esperando a que el Host inicie la partida...</p>
+        )}
+        <Button label="Salir de la sala" severity="secondary" onClick={onLeave} />
       </div>
     </section>
   )
