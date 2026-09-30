@@ -7,6 +7,7 @@ export class Game {
 		this.players = new Map()	//For shocketId -> Player
 		this.pieces = []			//Piece sequence (could change)
 		this.status = 'waiting'		//waiting || playing for players (multiplayer)
+		this.maxPlayers = 5
 	}
 
 	isNameTaken(playerName) {
@@ -41,6 +42,10 @@ export class Game {
 		return playerToRemove
 	}
 	
+	isFull() {
+		return this.players.size >= this.maxPlayers
+	}
+
 	addMorePieces(count = 10) {
 		for(let i = 0; i < count; i++) {
 			this.pieces.push(Piece.getRandomPiece())
@@ -58,5 +63,10 @@ export class Game {
 		this.status = 'playing'
 		this.pieces = []
 		this.addMorePieces(20)		//Starting 20 pieces
+	}
+
+	reset() {
+		this.status = 'waiting'
+		this.pieces = []
 	}
 }

@@ -1,6 +1,7 @@
 import { Game } from '../models/Game.js'
 
 const games = new Map()
+const MAX_CHAR = /^[a-zA-Z0-9_-]+$/
 
 export function setupSocketEvents(io) {
 	io.on('connection', (socket) => {
@@ -8,7 +9,15 @@ export function setupSocketEvents(io) {
 
 		socket.on('joinGame', ({room, playerName}) => {
 			if (!room || !playerName) {
-				socket.emit('error', {message: 'Player or room name missing'})
+				socket.emit('error', {message: `Player or room name missing`})
+				return
+			}
+			if(room.length > 9 || playerName.length > 9) {
+				socket.emit('error', {message: `Player or room name must be max 9 characters`})
+				return
+			}
+			if (!MAX_CHAR.test(room) || !MAX_CHAR.test(playerName)) {
+				socket.emit('error', {message: `Player or room name can only contain letters, numbers, hyphens and underscores`})
 				return
 			}
 			if(!games.has(room)) {
@@ -22,6 +31,10 @@ export function setupSocketEvents(io) {
 			}
 			if(game.isNameTaken(playerName)) {
 				socket.emit('error', {message: `Name "${playerName}" is already taken`})
+				return
+			}
+			if(game.isFull()) {
+				socket.emit('error', {message: `Room is full (max 5 players)`})
 				return
 			}
 
@@ -80,6 +93,9 @@ export function setupSocketEvents(io) {
 						console.log(`[Game] Room ${roomName} removed`)
 					} else {
 						console.log(`[Game] ${removedPlayer?.name || 'Player'} left room "${roomName}"`)
+						if(game.status === 'playing' && game.players.size === 1) {
+							game.reset()
+						}
 						io.to(roomName).emit('gameUpdated', {
 							room: game.name,
 							status: game.status,

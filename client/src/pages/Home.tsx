@@ -24,20 +24,22 @@ function Home() {
 
       <div className="home-panel">
         <div className="home-field">
-          <label htmlFor="nickname">Nickname</label>
+          <label htmlFor="nickname">Nickname (Max 9)</label>
           <InputText
             id="nickname"
             value={nickname}
+            maxLength={9}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setNickname(e.target.value)}
             placeholder="Ingresa tu nickname"
           />
         </div>
 
         <div className="home-field">
-          <label htmlFor="roomName">Sala</label>
+          <label htmlFor="roomName">Sala (Max 9)</label>
           <InputText
             id="roomName"
             value={roomName}
+            maxLength={9}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value)}
             placeholder="Nombre de la sala"
           />
@@ -50,3 +52,4 @@ function Home() {
 }
 
 export default Home
+

@@ -5,11 +5,12 @@ import '../styles/lobby.scss'
 interface LobbyProps {
   players: PlayerData[]
   currentSocketId?: string
+  hasError?: boolean
   onStartGame: () => void
   onLeave: () => void
 }
 
-function Lobby({ players, currentSocketId, onStartGame, onLeave }: LobbyProps) {
+function Lobby({ players, currentSocketId, hasError, onStartGame, onLeave }: LobbyProps) {
   const isHost = players.find((p) => p.id === currentSocketId)?.isHost ?? false
 
   return (
@@ -27,15 +28,22 @@ function Lobby({ players, currentSocketId, onStartGame, onLeave }: LobbyProps) {
 
       <div className="lobby-actions">
         {/* Only Host can push the button */}
-        {isHost ? (
-          <Button label="Iniciar Juego" onClick={onStartGame} />
+        {!hasError ? (
+          <>
+            {isHost ? (
+              <Button label="Iniciar Juego" onClick={onStartGame} />
+            ) : (
+              <p>Esperando a que el Host inicie la partida...</p>
+            )}
+            <Button label="Salir de la sala" severity="secondary" onClick={onLeave} />
+          </>
         ) : (
-          <p>Esperando a que el Host inicie la partida...</p>
+          <Button label="Salir de la sala" severity="secondary" onClick={onLeave} />
         )}
-        <Button label="Salir de la sala" severity="secondary" onClick={onLeave} />
       </div>
     </section>
   )
 }
 
 export default Lobby
+

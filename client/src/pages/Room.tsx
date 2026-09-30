@@ -20,14 +20,18 @@ function Room() {
 
   const [phase, setPhase] = useState<RoomPhase>('waiting')
   const [players, setPlayers] = useState<PlayerData[]>([])
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!roomName || !playerName) return
-
+    if (!roomName || !playerName) {
+      navigate('/')
+      return
+    }
     const handleConnect = () => {
       socket.emit('joinGame', { room: roomName, playerName })
     }
     socket.on('gameUpdated', (data: { players: PlayerData[]; status: RoomPhase }) => {
+      setErrorMessage(null)
       setPlayers(data.players)
       setPhase(data.status)
     })
@@ -35,6 +39,7 @@ function Room() {
       setPhase('playing')
     })
     socket.on('error', (err: { message: string }) => {
+      setErrorMessage(err.message)
       toastRef.current?.show({
         severity: 'error',
         summary: 'Error',
@@ -85,6 +90,7 @@ function Room() {
       <Lobby
         players={players}
         currentSocketId={socket.id}
+        hasError={!!errorMessage} //True if there is an error
         onStartGame={() => socket.emit('startGame', { room: roomName })}
         onLeave={handleLeaveRoom}
       />
