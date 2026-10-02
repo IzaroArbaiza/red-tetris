@@ -1,7 +1,10 @@
 const PIECE_TYPES = {
 	I: {
 		shape: [
-			[1,1,1,1]
+			[0,0,0,0],
+			[1,1,1,1],
+			[0,0,0,0],
+			[0,0,0,0]
 		],
 		color: 'cyan'
 	},
@@ -13,41 +16,46 @@ const PIECE_TYPES = {
 		color: 'yellow'
 	},
 	T: {
-        shape: [
-            [0,1,0],
-            [1,1,1]
-        ],
-        color: "purple"
-    },
-    J: {
-        shape: [
-            [1,1,1],
-            [0,0,1]
-        ],
-        color: "blue"
-    },
-    L: {
-        shape: [
-            [1,1,1],
-            [1,0,0]
-        ],
-        color: "orange"
-    },
-    S: {
-        shape: [
-            [0,1,1],
-            [1,1,0]
-        ],
-        color: "green"
-    },
-    Z: {
-        shape: [
-            [1,1,0],
-            [0,1,1]
-        ],
-        color: "red"
-    }
-};
+		shape: [
+			[0,1,0],
+			[1,1,1],
+			[0,0,0]
+		],
+		color: 'purple'
+	},
+	J: {
+		shape: [
+			[1,0,0],
+			[1,1,1],
+			[0,0,0]
+		],
+		color: 'blue'
+	},
+	L: {
+		shape: [
+			[0,0,1],
+			[1,1,1],
+			[0,0,0]
+		],
+		color: 'orange'
+	},
+	S: {
+		shape: [
+			[0,1,1],
+			[1,1,0],
+			[0,0,0]
+		],
+		color: 'green'
+	},
+	Z: {
+		shape: [
+			[1,1,0],
+			[0,1,1],
+			[0,0,0]
+		],
+		color: 'red'
+	}
+}
 
 export class Piece {
 	constructor(type) {

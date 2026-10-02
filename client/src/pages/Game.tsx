@@ -1,28 +1,14 @@
+import { useState } from 'react'
 import { Button } from 'primereact/button'
 import Board from '../components/Board/Board'
 import NextPiece from '../components/NextPiece/NextPiece'
 import Spectrum from '../components/Spectrum/Spectrum'
-import { BOARD_COLS, BOARD_ROWS, type BoardGrid, type Cell, type OpponentSpectrum } from '../types/tetris'
+import { createEmptyBoard } from '../game/board'
+import { BOARD_COLS, type Cell, type OpponentSpectrum } from '../types/tetris'
 import type { PlayerData } from './Room'
 import '../styles/game.scss'
 
 const MAX_OPPONENTS = 4
-
-function buildMockBoard(): BoardGrid {
-  const grid: BoardGrid = Array.from({ length: BOARD_ROWS }, () => Array<Cell>(BOARD_COLS).fill(null))
-
-  const tPiece: Array<[number, number]> = [
-    [0, 4],
-    [1, 3],
-    [1, 4],
-    [1, 5],
-  ]
-  tPiece.forEach(([row, col]) => {
-    grid[row][col] = 'purple'
-  })
-
-  return grid
-}
 
 function buildMockNextPiece(): Cell[][] {
   const grid: Cell[][] = Array.from({ length: 4 }, () => Array<Cell>(4).fill(null))
@@ -53,7 +39,7 @@ interface GameProps {
 }
 
 function Game({ roomName, playerName, players, onLeaveGame }: GameProps) {
-  const board = buildMockBoard()
+  const [board] = useState(createEmptyBoard)
   const nextPiece = buildMockNextPiece()
   const opponents = buildOpponents(players, playerName)
 
