@@ -9,6 +9,8 @@ export interface PlayerData {
   id: string
   name: string
   isHost: boolean
+  spectrum?: number[]
+  lost?: boolean
 }
 
 type RoomPhase = 'waiting' | 'playing'

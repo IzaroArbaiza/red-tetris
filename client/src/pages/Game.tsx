@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import { Button } from 'primereact/button'
 import Board from '../components/Board/Board'
 import NextPiece from '../components/NextPiece/NextPiece'
@@ -34,13 +33,16 @@ function buildMockNextPiece(): Cell[][] {
   return grid
 }
 
-function buildMockOpponents(): OpponentSpectrum[] {
-  return [
-    { playerName: 'Player2', isHost: true, isEliminated: false, columnHeights: [2, 4, 3, 5, 1, 0, 2, 6, 3, 4] },
-    { playerName: 'Player3', isHost: false, isEliminated: false, columnHeights: [1, 1, 3, 2, 4, 5, 3, 2, 1, 0] },
-    { playerName: 'Player4', isHost: false, isEliminated: true, columnHeights: [8, 9, 10, 12, 11, 9, 8, 10, 12, 13] },
-    { playerName: 'Player5', isHost: false, isEliminated: false, columnHeights: [0, 0, 1, 2, 1, 0, 0, 1, 2, 1] },
-  ].slice(0, MAX_OPPONENTS)
+function buildOpponents(players: PlayerData[], playerName: string): OpponentSpectrum[] {
+  return players
+    .filter((player) => player.name !== playerName)
+    .slice(0, MAX_OPPONENTS)
+    .map((player) => ({
+      playerName: player.name,
+      isHost: player.isHost,
+      isEliminated: player.lost ?? false,
+      columnHeights: player.spectrum ?? Array<number>(BOARD_COLS).fill(0),
+    }))
 }
 
 interface GameProps {
@@ -53,7 +55,7 @@ interface GameProps {
 function Game({ roomName, playerName, players, onLeaveGame }: GameProps) {
   const board = buildMockBoard()
   const nextPiece = buildMockNextPiece()
-  const opponents = buildMockOpponents()
+  const opponents = buildOpponents(players, playerName)
 
   return (
     <section id="game">
