@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use './variables' as *;
 
 .next-piece {
@@ -28,30 +29,44 @@
   background-color: $color-surface-alt;
 
   &.cell-cyan {
-    background-color: $color-cyan;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-cyan, $lightness: 40%), $color-cyan);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-blue {
-    background-color: $color-blue;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-blue, $lightness: 40%), $color-blue);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-orange {
-    background-color: $color-orange;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-orange, $lightness: 40%), $color-orange);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-yellow {
-    background-color: $color-yellow;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-yellow, $lightness: 40%), $color-yellow);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-green {
-    background-color: $color-green;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-green, $lightness: 40%), $color-green);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-purple {
-    background-color: $color-purple;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-purple, $lightness: 40%), $color-purple);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   &.cell-red {
-    background-color: $color-red;
+    border-radius: 3px;
+    background: linear-gradient(145deg, color.adjust($color-red, $lightness: 40%), $color-red);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 }

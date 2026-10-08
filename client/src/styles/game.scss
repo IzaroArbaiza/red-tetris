@@ -3,8 +3,13 @@
 #game {
   padding: $spacing-md;
   min-height: 100vh;
-  background-color: $color-bg;
+  display: flex;
+  flex-direction: column;
   color: $color-text;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../img/background.jpg') center / cover no-repeat fixed,
+    $color-bg;
 }
 
 .game-header {
@@ -15,10 +20,11 @@
 }
 
 .game-layout {
-  display: flex;
-  gap: 56px;
-  align-items: flex-start;
-  justify-content: center;
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
+  align-items: center;
 }
 
 .game-main {
@@ -40,24 +46,17 @@
 }
 
 .game-opponents {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: 70vh;
-  width: 480px;
-}
-
-.game-opponents h2 {
-  margin: 0;
-  font-size: 1rem;
-  color: $color-text-muted;
-}
-
-.game-opponents-grid {
-  flex: 1;
-  min-height: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: $spacing-md;
+  height: 70vh;
+  width: 220px;
+}
+
+.game-opponents-left {
+  justify-self: end;
+}
+
+.game-opponents-right {
+  justify-self: start;
 }

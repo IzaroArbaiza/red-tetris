@@ -11,6 +11,7 @@ import type { PlayerData } from './Room'
 import '../styles/game.scss'
 
 const MAX_OPPONENTS = 4
+const OPPONENTS_PER_SIDE = MAX_OPPONENTS / 2
 const PIECES_BUFFER = 5
 
 function buildOpponents(players: PlayerData[], playerName: string): OpponentSpectrum[] {
@@ -45,6 +46,8 @@ function Game({ roomName, playerName, players, pieces, onLeaveGame }: GameProps)
     }
   }, [pieceIndex, pieces.length, roomName])
   const opponents = buildOpponents(players, playerName)
+  const leftOpponents = opponents.slice(0, OPPONENTS_PER_SIDE)
+  const rightOpponents = opponents.slice(OPPONENTS_PER_SIDE)
 
   return (
     <section id="game">
@@ -54,20 +57,22 @@ function Game({ roomName, playerName, players, pieces, onLeaveGame }: GameProps)
       </header>
 
       <div className="game-layout">
+        <aside className="game-opponents game-opponents-left">
+          {leftOpponents.map((opponent) => (
+            <Spectrum key={opponent.playerName} opponent={opponent} />
+          ))}
+        </aside>
         <div className="game-main">
+          <Board grid={mergePiece(board, activePiece)} />
           <div className="game-main-info">
             <span className="game-player-name">{playerName}</span>
             <NextPiece grid={nextPiece} />
           </div>
-          <Board grid={mergePiece(board, activePiece)} />
         </div>
-        <aside className="game-opponents">
-          <h2>Rivales</h2>
-          <div className="game-opponents-grid">
-            {opponents.map((opponent) => (
-              <Spectrum key={opponent.playerName} opponent={opponent} />
-            ))}
-          </div>
+        <aside className="game-opponents game-opponents-right">
+          {rightOpponents.map((opponent) => (
+            <Spectrum key={opponent.playerName} opponent={opponent} />
+          ))}
         </aside>
       </div>
     </section>
