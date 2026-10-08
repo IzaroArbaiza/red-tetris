@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Toast } from 'primereact/toast'
 import { socket } from '../services/socket'
+import type { PieceData } from '../types/tetris'
 import Lobby from './Lobby'
 import Game from './Game'
 
@@ -22,6 +23,7 @@ function Room() {
 
   const [phase, setPhase] = useState<RoomPhase>('waiting')
   const [players, setPlayers] = useState<PlayerData[]>([])
+  const [pieces, setPieces] = useState<PieceData[]>([])
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
@@ -37,8 +39,21 @@ function Room() {
       setPlayers(data.players)
       setPhase(data.status)
     })
-    socket.on('gameStarted', () => {
+    socket.on('gameStarted', (data: { pieces: PieceData[] }) => {
+      console.log('[Pieces] gameStarted:', data.pieces.map((p) => p.type).join(' '))
+      setPieces(data.pieces)
       setPhase('playing')
+    })
+    // Pieces come from the room's shared sequence, so they are placed by index
+    socket.on('morePieces', (data: { startIndex: number; pieces: PieceData[] }) => {
+      console.log(`[Pieces] morePieces from ${data.startIndex}:`, data.pieces.map((p) => p.type).join(' '))
+      setPieces((prev) => {
+        const next = [...prev]
+        data.pieces.forEach((piece, i) => {
+          next[data.startIndex + i] = piece
+        })
+        return next
+      })
     })
     socket.on('error', (err: { message: string }) => {
       setErrorMessage(err.message)
@@ -62,6 +77,7 @@ function Room() {
       socket.off('connect', handleConnect)
       socket.off('gameUpdated')
       socket.off('gameStarted')
+      socket.off('morePieces')
       socket.off('error')
       socket.disconnect()
     }
@@ -80,6 +96,7 @@ function Room() {
           roomName={roomName ?? ''}
           playerName={playerName ?? ''}
           players={players}
+          pieces={pieces}
           onLeaveGame={handleLeaveRoom}
         />
       </>

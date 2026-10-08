@@ -65,6 +65,7 @@ export function setupSocketEvents(io) {
 
 			game.start()
 			console.log(`[Game] Game started in room: ${room}`)
+			console.log(`[Pieces] ${room}: ${game.pieces.map((p) => p.type).join(' ')}`)
 
 			io.to(room).emit('gameStarted', {
 				status: game.status,
@@ -77,6 +78,7 @@ export function setupSocketEvents(io) {
 			if(!game || game.status !== 'playing')
 				return
 			const newPieces = game.getPieces(startIndex, 5)
+			console.log(`[Pieces] ${room} -> ${game.players.get(socket.id)?.name} from ${startIndex}: ${newPieces.map((p) => p.type).join(' ')}`)
 			socket.emit('morePieces', {
 				startIndex,
 				pieces: newPieces

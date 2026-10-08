@@ -1,23 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from 'primereact/button'
 import Board from '../components/Board/Board'
 import NextPiece from '../components/NextPiece/NextPiece'
 import Spectrum from '../components/Spectrum/Spectrum'
 import { createEmptyBoard } from '../game/board'
-import { BOARD_COLS, type Cell, type OpponentSpectrum } from '../types/tetris'
+import { mergePiece, pieceToPreview, spawnPiece } from '../game/piece'
+import { socket } from '../services/socket'
+import { BOARD_COLS, type OpponentSpectrum, type PieceData } from '../types/tetris'
 import type { PlayerData } from './Room'
 import '../styles/game.scss'
 
 const MAX_OPPONENTS = 4
-
-function buildMockNextPiece(): Cell[][] {
-  const grid: Cell[][] = Array.from({ length: 4 }, () => Array<Cell>(4).fill(null))
-  grid[1][0] = 'green'
-  grid[1][1] = 'green'
-  grid[2][1] = 'green'
-  grid[2][2] = 'green'
-  return grid
-}
+const PIECES_BUFFER = 5
 
 function buildOpponents(players: PlayerData[], playerName: string): OpponentSpectrum[] {
   return players
@@ -35,12 +29,21 @@ interface GameProps {
   roomName: string
   playerName: string
   players: PlayerData[]
+  pieces: PieceData[]
   onLeaveGame: () => void
 }
 
-function Game({ roomName, playerName, players, onLeaveGame }: GameProps) {
+function Game({ roomName, playerName, players, pieces, onLeaveGame }: GameProps) {
   const [board] = useState(createEmptyBoard)
-  const nextPiece = buildMockNextPiece()
+  const [pieceIndex] = useState(0)
+  const [activePiece] = useState(() => (pieces[0] ? spawnPiece(pieces[0]) : null))
+  const nextPiece = pieceToPreview(pieces[pieceIndex + 1])
+
+  useEffect(() => {
+    if (pieces.length > 0 && pieceIndex + PIECES_BUFFER >= pieces.length) {
+      socket.emit('requestPieces', { room: roomName, startIndex: pieces.length })
+    }
+  }, [pieceIndex, pieces.length, roomName])
   const opponents = buildOpponents(players, playerName)
 
   return (
@@ -56,9 +59,8 @@ function Game({ roomName, playerName, players, onLeaveGame }: GameProps) {
             <span className="game-player-name">{playerName}</span>
             <NextPiece grid={nextPiece} />
           </div>
-          <Board grid={board} />
+          <Board grid={mergePiece(board, activePiece)} />
         </div>
-
         <aside className="game-opponents">
           <h2>Rivales</h2>
           <div className="game-opponents-grid">
